@@ -1,0 +1,326 @@
+#+STARTUP: overview 
+#+PROPERTY: header-args :comments yes :results silent
+
+* Language
+#+begin_src emacs-lisp
+
+(setq default-input-method "russian-computer")
+#+end_src
+
+* Dictionary
+#+begin_src emacs-lisp 
+
+(use-package flyspell
+  :ensure t
+  :defer t
+  :config
+  (define-key flyspell-mode-map [down-mouse-3] 'flyspell-correct-word))
+
+(setq ispell-program-name "aspell")
+
+#+end_src
+* Line wrap
+#+begin_src emacs-lisp
+(global-visual-line-mode t)
+#+end_src
+
+* Interface
+
+  
+#+BEGIN_SRC emacs-lisp
+;; Do not show the startup screen.
+(setq
+ inhibit-startup-message t
+ initial-scratch-message nil
+ )
+;; Disable tool bar, scroll bar.
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+
+;; Disable tool bar, scroll bar.
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+
+(line-number-mode t)
+;; y/n
+(defalias 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+
+* Cursor
+#+begin_src emacs-lisp 
+(setq-default cursor-type 'bar) 
+#+end_src
+
+* Sidebar
+#+begin_src emacs-lisp 
+
+(use-package dired-sidebar
+  :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
+  :ensure t
+  :commands (dired-sidebar-toggle-sidebar)
+  :init
+  (add-hook 'dired-sidebar-mode-hook
+            (lambda ()
+              (unless (file-remote-p default-directory)
+                (auto-revert-mode))))
+  :config
+  (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
+  (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
+
+  (setq dired-sidebar-subtree-line-prefix "__")
+  (setq dired-sidebar-use-term-integration t)
+  (setq dired-sidebar-use-custom-font t))
+
+#+end_src
+* Open recent
+ #+BEGIN_SRC emacs-lisp
+(recentf-mode 1)
+(setq recentf-max-menu-items 25)
+(setq recentf-max-saved-items 25)
+(global-set-key "\C-x\ \C-r" 'recentf-open-files)
+ #+END_SRC
+* Backup files
+#+BEGIN_SRC emacs-lisp
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
+#+END_SRC
+
+* Overwriting text
+#+BEGIN_SRC emacs-lisp
+(delete-selection-mode +1)
+#+END_SRC
+* try
+#+BEGIN_SRC emacs-lisp
+(use-package try
+	:ensure t)
+#+END_SRC
+
+* Color Theme
+#+begin_src emacs-lisp 
+
+(use-package poet-theme 
+  :ensure t
+  :load-path "themes"
+ )
+(set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 104)
+(set-face-attribute 'fixed-pitch nil :family "DejaVu Sans Mono")
+(set-face-attribute 'variable-pitch nil :family "IBM Plex Serif")
+
+(custom-set-faces
+  '(org-level-1 ((t (:inherit outline-1 :height 1.3))))
+  '(org-level-2 ((t (:inherit outline-2 :height 1.1))))
+  '(org-level-3 ((t (:inherit outline-3 :height 1.1))))
+  '(org-level-4 ((t (:inherit outline-4 :height 1.0))))
+  '(org-level-5 ((t (:inherit outline-5 :height 1.0))))
+)
+
+#+end_src
+* which key
+  Brings up some help
+  #+BEGIN_SRC emacs-lisp
+    (use-package which-key
+      :ensure t 
+      :config
+      (which-key-mode))
+
+#+END_SRC
+
+* Org mode
+ #+BEGIN_SRC emacs-lisp
+ (use-package org 
+      :ensure t
+      :pin org)
+
+ (use-package org-bullets
+      :ensure t
+      :config
+      (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+ #+END_SRC
+
+* Company
+#+BEGIN_SRC emacs-lisp
+(use-package company
+:ensure t
+:config
+(setq company-idle-delay 0)
+(setq company-minimum-prefix-length 3)
+
+(global-company-mode t)
+)
+(defun my-web-mode-hook ()
+  (set (make-local-variable 'company-backends) '(company-css company-web-html company-yasnippet company-files))
+)
+
+#+END_SRC
+
+* Font Highlight
+#+BEGIN_SRC emacs-lisp
+(setq org-hide-emphasis-markers t)                            
+(setq org-emphasis-alist   
+(quote (("*" bold)
+("/" italic)
+("_" underline)
+("=" (:foreground "yellow" :background "black"))
+("~" org-verbatim verbatim)
+("+"
+(:strike-through t))
+))) 
+
+#+END_SRC
+
+* PDF
+#+BEGIN_SRC emacs-lisp
+(use-package pdf-tools
+  :pin manual ;; manually update
+  :config
+  ;; initialise
+  (pdf-tools-install)
+  ;; open pdfs scaled to fit page
+  (setq-default pdf-view-display-size 'fit-page)
+  ;; automatically annotate highlights
+  (setq pdf-annot-activate-created-annotations t)
+  ;; use normal isearch
+  (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward))
+
+#+END_SRC
+
+* Flycheck
+ #+BEGIN_SRC emacs-lisp
+    (use-package flycheck
+      :ensure t
+      :init
+      (global-flycheck-mode t))
+
+ #+END_SRC
+
+* Bookmarks
+#+begin_src emacs-lisp
+(setq bookmark-default-file "~/Dropbox/common/emacs/bookmarks.bmk" bookmark-save-flag 1)
+
+#+end_src
+
+* WRITING
+#+begin_src emacs-lisp
+(use-package writegood-mode
+    :ensure t
+    :bind ("C-c g" . writegood-mode)
+    :config
+    (add-to-list 'writegood-weasel-words "actionable"))
+#+end_src
+* Org-ref
+#+begin_src emacs-lisp
+(use-package org-ref
+         :ensure t
+         :after org
+         :init
+         
+         (setq org-ref-default-bibliography '("~/Dropbox/bibliography/references.bib"))
+         (setq org-ref-pdf-directory '("~/Yandex.Disk/LIBRARY")))
+
+(setq bibtex-completion-bibliography "~/Dropbox/bibliography/references.bib"
+      bibtex-completion-library-path "~/Yandex.Disk/LIBRARY/bibtex-pdfs"
+      bibtex-completion-notes-path "~/Dropbox/bibliography/helm-bibtex-notes")
+
+(setq bibtex-completion-pdf-open-function 'org-open-file)
+#+end_src
+
+* Helm
+#+begin_src emacs-lisp
+(use-package helm
+    :ensure t)
+
+(use-package helm-bibtex
+    :ensure t)
+#+end_src
+
+* Presentations
+  #+begin_src emacs-lisp 
+
+(use-package ox-reveal
+  :ensure t
+  :config
+    (require 'ox-reveal)
+    (setq org-reveal-root "file:///home/tam/Dropbox/reveal.js-master")
+    
+)
+    (use-package htmlize
+    :ensure t)
+
+  #+end_src 
+* CODING
+#+begin_src emacs-lisp
+(use-package smartparens
+    :ensure t
+    :config
+    (add-hook 'prog-mode-hook 'smartparens-mode))
+
+(use-package dumb-jump
+    :ensure t
+    :bind (("C-M-g" . dumb-jump-go)
+           ("C-M-p" . dumb-jump-back)
+           ("C-M-q" . dumb-jump-quick-look)))
+
+(use-package magit
+    :ensure t
+    :bind ("C-x g" . magit-status))
+
+(use-package yasnippet
+      :ensure t
+      :config
+      (add-to-list 'yas-snippet-dirs "~/.emacs.d/snippets")
+      (yas-global-mode 1))
+
+(use-package js2-mode
+    :ensure t
+    :mode "\\.js\\'"
+    :config
+    (setq-default js2-ignored-warnings '("msg.extra.trailing.comma")))
+
+
+ (use-package web-mode
+    :ensure t 
+    :mode ("\\.html\\'")
+    :config
+    (setq web-mode-markup-indent-offset 2)
+    (setq web-mode-code-indent-offset 2)
+    (setq web-mode-css-indent-offset 2)
+    (add-to-list 'auto-mode-alist '("\\.ts\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.css?\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode)))
+
+(use-package emmet-mode
+  :ensure t 
+  :defer t
+  :init
+  (setq emmet-indentation 2)
+  (setq emmet-move-cursor-between-quotes t)
+  :config
+  (add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
+  (add-hook 'web-mode-hook  'emmet-mode)
+  (add-hook 'html-mode-hook 'emmet-mode)
+  (add-hook 'css-mode-hook  'emmet-mode)) ;; enable Emmet's css abbreviation.
+
+;;Code formatting.
+
+(use-package format-all
+     :ensure t
+)
+
+#+end_src
+
+
+
+
+
+
+
+* Pug
+#+begin_src emacs-lisp 
+(use-package pug-mode
+    :ensure t)
+
+#+end_src
+
