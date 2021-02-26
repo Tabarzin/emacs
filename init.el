@@ -55,6 +55,7 @@
  '(nrepl-message-colors
    (quote
     ("#9d0006" "#af3a03" "#b57614" "#747400" "#c6c148" "#004858" "#689d6a" "#d3869b" "#8f3f71")))
+ '(org-agenda-files (quote ("~/Desktop/testbib.org")))
  '(package-selected-packages
    (quote
     (pug-mode format-all poet-theme color-theme-solarized dired-sidebar web-mode js2-mode magit dumb-jump flycheck use-package yasnippet-snippets find-file-in-project elpy org-roam-bibtex org-ref org-bullets auto-complete)))

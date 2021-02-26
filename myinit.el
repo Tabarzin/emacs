@@ -1,15 +1,8 @@
-#+STARTUP: overview 
-#+PROPERTY: header-args :comments yes :results silent
-
-* Language
-#+begin_src emacs-lisp
-
+;; [[file:myinit.org::*Language][Language:1]]
 (setq default-input-method "russian-computer")
-#+end_src
+;; Language:1 ends here
 
-* Dictionary
-#+begin_src emacs-lisp 
-
+;; [[file:myinit.org::*Dictionary][Dictionary:1]]
 (use-package flyspell
   :ensure t
   :defer t
@@ -17,17 +10,13 @@
   (define-key flyspell-mode-map [down-mouse-3] 'flyspell-correct-word))
 
 (setq ispell-program-name "aspell")
+;; Dictionary:1 ends here
 
-#+end_src
-* Line wrap
-#+begin_src emacs-lisp
+;; [[file:myinit.org::*Line wrap][Line wrap:1]]
 (global-visual-line-mode t)
-#+end_src
+;; Line wrap:1 ends here
 
-* Interface
-
-  
-#+BEGIN_SRC emacs-lisp
+;; [[file:myinit.org::*Interface][Interface:1]]
 ;; Do not show the startup screen.
 (setq
  inhibit-startup-message t
@@ -44,16 +33,13 @@
 (line-number-mode t)
 ;; y/n
 (defalias 'yes-or-no-p 'y-or-n-p)
-#+END_SRC
+;; Interface:1 ends here
 
-* Cursor
-#+begin_src emacs-lisp 
-(setq-default cursor-type 'bar) 
-#+end_src
+;; [[file:myinit.org::*Cursor][Cursor:1]]
+(setq-default cursor-type 'bar)
+;; Cursor:1 ends here
 
-* Sidebar
-#+begin_src emacs-lisp 
-
+;; [[file:myinit.org::*Sidebar][Sidebar:1]]
 (use-package dired-sidebar
   :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
   :ensure t
@@ -70,36 +56,32 @@
   (setq dired-sidebar-subtree-line-prefix "__")
   (setq dired-sidebar-use-term-integration t)
   (setq dired-sidebar-use-custom-font t))
+;; Sidebar:1 ends here
 
-#+end_src
-* Open recent
- #+BEGIN_SRC emacs-lisp
+;; [[file:myinit.org::*Open recent][Open recent:1]]
 (recentf-mode 1)
 (setq recentf-max-menu-items 25)
 (setq recentf-max-saved-items 25)
 (global-set-key "\C-x\ \C-r" 'recentf-open-files)
- #+END_SRC
-* Backup files
-#+BEGIN_SRC emacs-lisp
+;; Open recent:1 ends here
+
+;; [[file:myinit.org::*Backup files][Backup files:1]]
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
-#+END_SRC
+;; Backup files:1 ends here
 
-* Overwriting text
-#+BEGIN_SRC emacs-lisp
+;; [[file:myinit.org::*Overwriting text][Overwriting text:1]]
 (delete-selection-mode +1)
-#+END_SRC
-* try
-#+BEGIN_SRC emacs-lisp
+;; Overwriting text:1 ends here
+
+;; [[file:myinit.org::*try][try:1]]
 (use-package try
 	:ensure t)
-#+END_SRC
+;; try:1 ends here
 
-* Color Theme
-#+begin_src emacs-lisp 
-
+;; [[file:myinit.org::*Color Theme][Color Theme:1]]
 (use-package poet-theme 
   :ensure t
   :load-path "themes"
@@ -115,32 +97,27 @@
   '(org-level-4 ((t (:inherit outline-4 :height 1.0))))
   '(org-level-5 ((t (:inherit outline-5 :height 1.0))))
 )
+;; Color Theme:1 ends here
 
-#+end_src
-* which key
-  Brings up some help
-  #+BEGIN_SRC emacs-lisp
-    (use-package which-key
-      :ensure t 
-      :config
-      (which-key-mode))
+;; [[file:myinit.org::*which key][which key:1]]
+(use-package which-key
+  :ensure t 
+  :config
+  (which-key-mode))
+;; which key:1 ends here
 
-#+END_SRC
+;; [[file:myinit.org::*Org mode][Org mode:1]]
+(use-package org 
+     :ensure t
+     :pin org)
 
-* Org mode
- #+BEGIN_SRC emacs-lisp
- (use-package org 
-      :ensure t
-      :pin org)
+(use-package org-bullets
+     :ensure t
+     :config
+     (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+;; Org mode:1 ends here
 
- (use-package org-bullets
-      :ensure t
-      :config
-      (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
- #+END_SRC
-
-* Company
-#+BEGIN_SRC emacs-lisp
+;; [[file:myinit.org::*Company][Company:1]]
 (use-package company
 :ensure t
 :config
@@ -152,11 +129,9 @@
 (defun my-web-mode-hook ()
   (set (make-local-variable 'company-backends) '(company-css company-web-html company-yasnippet company-files))
 )
+;; Company:1 ends here
 
-#+END_SRC
-
-* Font Highlight
-#+BEGIN_SRC emacs-lisp
+;; [[file:myinit.org::*Font Highlight][Font Highlight:1]]
 (setq org-hide-emphasis-markers t)                            
 (setq org-emphasis-alist   
 (quote (("*" bold)
@@ -166,12 +141,10 @@
 ("~" org-verbatim verbatim)
 ("+"
 (:strike-through t))
-))) 
+)))
+;; Font Highlight:1 ends here
 
-#+END_SRC
-
-* PDF
-#+BEGIN_SRC emacs-lisp
+;; [[file:myinit.org::*PDF][PDF:1]]
 (use-package pdf-tools
   :pin manual ;; manually update
   :config
@@ -183,34 +156,28 @@
   (setq pdf-annot-activate-created-annotations t)
   ;; use normal isearch
   (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward))
+;; PDF:1 ends here
 
-#+END_SRC
+;; [[file:myinit.org::*Flycheck][Flycheck:1]]
+(use-package flycheck
+  :ensure t
+  :init
+  (global-flycheck-mode t))
+;; Flycheck:1 ends here
 
-* Flycheck
- #+BEGIN_SRC emacs-lisp
-    (use-package flycheck
-      :ensure t
-      :init
-      (global-flycheck-mode t))
-
- #+END_SRC
-
-* Bookmarks
-#+begin_src emacs-lisp
+;; [[file:myinit.org::*Bookmarks][Bookmarks:1]]
 (setq bookmark-default-file "~/Dropbox/common/emacs/bookmarks.bmk" bookmark-save-flag 1)
+;; Bookmarks:1 ends here
 
-#+end_src
-
-* WRITING
-#+begin_src emacs-lisp
+;; [[file:myinit.org::*WRITING][WRITING:1]]
 (use-package writegood-mode
     :ensure t
     :bind ("C-c g" . writegood-mode)
     :config
     (add-to-list 'writegood-weasel-words "actionable"))
-#+end_src
-* Org-ref
-#+begin_src emacs-lisp
+;; WRITING:1 ends here
+
+;; [[file:myinit.org::*Org-ref][Org-ref:1]]
 (use-package org-ref
          :ensure t
          :after org
@@ -246,20 +213,17 @@
 
 (require 'org-ref-pdf)
 (require 'org-ref-url-utils)
-#+end_src
+;; Org-ref:1 ends here
 
-* Helm
-#+begin_src emacs-lisp
+;; [[file:myinit.org::*Helm][Helm:1]]
 (use-package helm
     :ensure t)
 
 (use-package helm-bibtex
     :ensure t)
-#+end_src
+;; Helm:1 ends here
 
-* Presentations
-  #+begin_src emacs-lisp 
-
+;; [[file:myinit.org::*Presentations][Presentations:1]]
 (use-package ox-reveal
   :ensure t
   :config
@@ -269,10 +233,9 @@
 )
     (use-package htmlize
     :ensure t)
+;; Presentations:1 ends here
 
-  #+end_src 
-* CODING
-#+begin_src emacs-lisp
+;; [[file:myinit.org::*CODING][CODING:1]]
 (use-package smartparens
     :ensure t
     :config
@@ -330,20 +293,9 @@
 (use-package format-all
      :ensure t
 )
+;; CODING:1 ends here
 
-#+end_src
-
-
-
-
-
-
-
-* Pug
-#+begin_src emacs-lisp 
+;; [[file:myinit.org::*Pug][Pug:1]]
 (use-package pug-mode
     :ensure t)
-
-#+end_src
-
-
+;; Pug:1 ends here
